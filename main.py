@@ -5,9 +5,14 @@
 # ------------------------------ Import ------------------------------#
 import sys
 #from lib2to3.btm_utils import MinNode
+import os
+import time
+import threading
 
 from qtpy import QtWidgets
 from ui.mainwindow import Ui_MainWindow as ui
+from PyQt6.QtCore import QTime, QTimer
+
 
 # ------------------------------ Standarts ------------------------------#
 
@@ -32,23 +37,22 @@ def marked_button():
     pass
 def do_search():
     suchbegriff = MainFenster.lineEdit.text()
-    if suchbegriff == "":
-        print("leer")
-    else:
+    if suchbegriff != "":
         pfad = f"./Data/{suchbegriff}"
         if os.path.exists(pfad):
             with open(pfad, "w") as file:
                 inhalt = file.read()
 
         else:
-            print("hi")
-            # Fehlermeldung wenn datei nicht gefunden hinzufügen
+            def error_datei_nicht_gefunden():
+                MainFenster.label.setText("Datei nicht Vorhanden")
+                time.sleep(5)
+                MainFenster.label.clear()
+            timer_thread = threading.Thread(target=error_datei_nicht_gefunden)
+            timer_thread.start()
 
-
-
-
-
-
+def open_file():
+    pass
 
 
 
@@ -65,6 +69,8 @@ app = QtWidgets.QApplication(sys.argv)
 
 window = QtWidgets.QMainWindow()
 MainFenster = ui()
+
+
 
 MainFenster.setupUi(window)
 
