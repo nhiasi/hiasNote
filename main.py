@@ -33,6 +33,8 @@ def brows_button():
     pass
 def last_button():
     pass
+def last_button():
+    pass
 def marked_button():
     pass
 def do_search():
