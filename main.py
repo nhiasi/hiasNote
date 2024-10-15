@@ -31,19 +31,20 @@ def last_button():
 def marked_button():
     pass
 def do_search():
-
     suchbegriff = MainFenster.lineEdit.text()
     if suchbegriff == "":
         print("leer")
     else:
-        # hier kann der str evtl noch n bisschen fromatiert werden
-        suchbegriff_file = f"./Data/{suchbegriff}txt"
-        try:
-            with open(suchbegriff_file, "read") as file:
+        pfad = f"./Data/{suchbegriff}"
+        if os.path.exists(pfad):
+            with open(pfad, "w") as file:
                 inhalt = file.read()
-        except FileNotFoundError:
-            #fehlermeldung
-            print("Fehler")
+
+        else:
+            print("hi")
+            # Fehlermeldung wenn datei nicht gefunden hinzufügen
+
+
 
 
 
