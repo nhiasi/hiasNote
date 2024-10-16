@@ -44,20 +44,15 @@ def main_setup():
 
 
 def save_note():
-    print("hi")
     def saving_note():
-        MainFenster.textEdit.disconnect()
-        time.sleep(1)
+        MainFenster.textEdit.blockSignals(True)
+        time.sleep(60)
         note_inhalt = MainFenster.textEdit.toPlainText()
-        #MainFenster.textEdit.textChanged.connect(save_note)
-
+        MainFenster.textEdit.blockSignals(False)
         with open("PData/notiz.txt", "w") as file:
             file.write(note_inhalt)
-
-
     note_thread = threading.Thread(target=saving_note)
     note_thread.start()
-
 
 
 def new_button():
@@ -70,13 +65,15 @@ def last_button():
     pass
 def marked_button():
     pass
+
+
 def do_search():
     suchbegriff = MainFenster.lineEdit.text()
     if suchbegriff != "":
         pfad = f"./Data/{suchbegriff}"
         if os.path.exists(pfad):
-            with open(pfad, "w") as file:
-                inhalt = file.read()
+
+                open_file(pfad)
 
         else:
             def error_datei_nicht_gefunden():
@@ -86,7 +83,10 @@ def do_search():
             timer_thread = threading.Thread(target=error_datei_nicht_gefunden)
             timer_thread.start()
 
-def open_file():
+def open_file(pfad):
+    with open(pfad, "w") as file:
+        inhalt = file.read()
+
     pass
 
 
