@@ -17,15 +17,48 @@ from PyQt6.QtCore import QTime, QTimer
 # ------------------------------ Standarts ------------------------------#
 
 
-
+#TODO: fehlermeldung gedönz zentrieren
 
 
 
 # ------------------------------ Code ------------------------------#
 
+def main_setup():
+    if not MainFenster.textEdit.toPlainText():
+        with open("PData/notiz.txt") as file:
+            if file:
+                MainFenster.textEdit.setText(file.read())
+
+    MainFenster.lineEdit.editingFinished.connect(do_search)
+
+    MainFenster.pushButton.clicked.connect(new_button)
+    MainFenster.pushButton_2.clicked.connect(brows_button)
+    MainFenster.pushButton_3.clicked.connect(last_button)
+    MainFenster.pushButton_4.clicked.connect(marked_button)
+
+    MainFenster.checkBox.stateChanged.connect(chbo.eins)
+    MainFenster.checkBox_2.stateChanged.connect(chbo.zwei)
+    MainFenster.checkBox_3.stateChanged.connect(chbo.drei)
+
+    MainFenster.textEdit.textChanged.connect(save_note)
+
+
 def save_note():
-    a = MainFenster.textEdit.toPlainText()
-    print(a)
+    print("hi")
+    def saving_note():
+        MainFenster.textEdit.disconnect()
+        time.sleep(1)
+        note_inhalt = MainFenster.textEdit.toPlainText()
+        #MainFenster.textEdit.textChanged.connect(save_note)
+
+        with open("PData/notiz.txt", "w") as file:
+            file.write(note_inhalt)
+
+
+    note_thread = threading.Thread(target=saving_note)
+    note_thread.start()
+
+
 
 def new_button():
     pass
@@ -75,20 +108,9 @@ MainFenster = ui()
 
 
 MainFenster.setupUi(window)
+main_setup()
 
 
-MainFenster.lineEdit.editingFinished.connect(do_search)
-
-MainFenster.pushButton.clicked.connect(new_button)
-MainFenster.pushButton_2.clicked.connect(brows_button)
-MainFenster.pushButton_3.clicked.connect(last_button)
-MainFenster.pushButton_4.clicked.connect(marked_button)
-
-MainFenster.checkBox.stateChanged.connect(chbo.eins)
-MainFenster.checkBox_2.stateChanged.connect(chbo.zwei)
-MainFenster.checkBox_3.stateChanged.connect(chbo.drei)
-
-#MainFenster.textEdit..connect(save_note)
 
 
 
