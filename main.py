@@ -1,6 +1,7 @@
 # Hi fellers
 # ------------------------------ Version ------------------------------#
 #Version 1.0.0
+#Author nhiasi
 import json
 # ------------------------------ Import ------------------------------#
 import sys
@@ -16,8 +17,6 @@ from PyQt6.QtCore import QTime, QTimer
 
 # ------------------------------ Standarts ------------------------------#
 
-
-#
 
 
 
@@ -44,6 +43,7 @@ def main_setup():
         QTimer.singleShot(550, lambda: todo.drei())
 
     MainFenster.lineEdit.editingFinished.connect(do_search)
+    MainFenster.lineEdit.setFocus()
 
     MainFenster.pushButton.clicked.connect(new_button)
     MainFenster.pushButton_2.clicked.connect(brows_button)
@@ -76,10 +76,11 @@ def new_button():
     pass
 def brows_button():
     pass
+
+
 def last_button():
     pass
-def last_button():
-    pass
+
 def marked_button():
     pass
 
