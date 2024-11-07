@@ -10,8 +10,12 @@ import os
 import time
 import threading
 
+from PyQt6.QtWidgets import QWidget
+#from PyQt6.QtWidgets.QWidget import window
 from qtpy import QtWidgets
 from ui.mainwindow import Ui_MainWindow as ui
+from ui.newwindow import Ui_Form as ui_n
+from ui.editwindow import Ui_Form as ui_e
 from PyQt6.QtCore import QTime, QTimer
 
 
@@ -73,7 +77,10 @@ def save_note():
 
 
 def new_button():
-    pass
+    MainFenster.stackedWidget.setCurrentWidget(MainFenster.page_2)
+    # so kann man fenster aufrufen
+
+
 def brows_button():
     pass
 
@@ -102,7 +109,6 @@ def open_file(pfad):
         inhalt = file.read()
 
     pass
-
 
 
 class ToDo:
@@ -174,11 +180,9 @@ app = QtWidgets.QApplication(sys.argv)
 
 window = QtWidgets.QMainWindow()
 MainFenster = ui()
-
-
-
 MainFenster.setupUi(window)
 main_setup()
 
 window.show()
+
 sys.exit(app.exec())
