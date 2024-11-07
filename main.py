@@ -123,7 +123,7 @@ class ToDo:
             self.datei.pop(1)
             self.todo_done()
             self.set_todos()
-            MainFenster.checkBox.setChecked(False)
+            MainFenster.checkBox_2.setChecked(False)
 
 
     def drei(self):
@@ -131,7 +131,7 @@ class ToDo:
             self.datei.pop(2)
             self.todo_done()
             self.set_todos()
-            MainFenster.checkBox.setChecked(False)
+            MainFenster.checkBox_3.setChecked(False)
 
 
 
