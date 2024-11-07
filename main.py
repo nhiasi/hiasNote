@@ -14,8 +14,7 @@ from PyQt6.QtWidgets import QWidget
 #from PyQt6.QtWidgets.QWidget import window
 from qtpy import QtWidgets
 from ui.mainwindow import Ui_MainWindow as ui
-from ui.newwindow import Ui_Form as ui_n
-from ui.editwindow import Ui_Form as ui_e
+
 from PyQt6.QtCore import QTime, QTimer
 
 
@@ -46,10 +45,12 @@ def main_setup():
     def chbo3():
         QTimer.singleShot(550, lambda: todo.drei())
 
+
+    ### Main Fenster ###
     MainFenster.lineEdit.editingFinished.connect(do_search)
     MainFenster.lineEdit.setFocus()
 
-    MainFenster.pushButton.clicked.connect(new_button)
+    MainFenster.pushButton.clicked.connect(go_new)
     MainFenster.pushButton_2.clicked.connect(brows_button)
     MainFenster.pushButton_3.clicked.connect(last_button)
     MainFenster.pushButton_4.clicked.connect(marked_button)
@@ -58,11 +59,25 @@ def main_setup():
     MainFenster.checkBox_2.stateChanged.connect(chbo2)
     MainFenster.checkBox_3.stateChanged.connect(chbo3)
 
+    MainFenster.pushButton_5.clicked.connect(edit_save)
+
+
     MainFenster.textEdit.textChanged.connect(save_note)
 
 
     MainFenster.label.setText("")
 
+    ### New Fenster ###
+
+    MainFenster.pushButton_6.clicked.connect(go_home)
+    MainFenster.checkBox_4.stateChanged.connect(show4)
+
+
+
+
+
+def go_home():
+    MainFenster.stackedWidget.setCurrentWidget(MainFenster.page)
 
 def save_note():
     def saving_note():
@@ -76,10 +91,37 @@ def save_note():
     note_thread.start()
 
 
-def new_button():
+def go_new():
     MainFenster.stackedWidget.setCurrentWidget(MainFenster.page_2)
     # so kann man fenster aufrufen
+    MainFenster.checkBox_4.setVisible(False)
+    MainFenster.lineEdit_2.setFocus()
 
+def edit_save():
+
+    file_name = MainFenster.lineEdit_2.text()
+
+    with open(f"Data/Notes/{file_name}.txt", "w") as file:
+        file.write(MainFenster.plainTextEdit_2.toPlainText())
+        MainFenster.plainTextEdit_2.toPlainText()
+
+    if MainFenster.checkBox_5.isChecked():
+        with open("PData/todos.json") as file:
+            datei = json.load(file)
+            data = list(datei)
+            data.append(file_name)
+
+    go_home()
+
+
+
+
+
+
+
+
+def show4():
+    MainFenster.checkBox_4.setVisible(True)
 
 def brows_button():
     pass
@@ -181,8 +223,8 @@ app = QtWidgets.QApplication(sys.argv)
 window = QtWidgets.QMainWindow()
 MainFenster = ui()
 MainFenster.setupUi(window)
-main_setup()
 
+main_setup()
 window.show()
 
 sys.exit(app.exec())
