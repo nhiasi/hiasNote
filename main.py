@@ -10,6 +10,8 @@ import os
 import time
 import threading
 
+import pickle
+
 from PyQt6.QtWidgets import QWidget
 #from PyQt6.QtWidgets.QWidget import window
 from qtpy import QtWidgets
@@ -70,14 +72,27 @@ def main_setup():
     ### New Fenster ###
 
     MainFenster.pushButton_6.clicked.connect(go_home)
-    MainFenster.checkBox_4.stateChanged.connect(show4)
+    MainFenster.checkBox_5.stateChanged.connect(show4)
 
 
 
 
 
 def go_home():
+    if MainFenster.stackedWidget.currentIndex() == 1:
+        MainFenster.checkBox_4.setChecked(False)
+        MainFenster.checkBox_4.setChecked(False)
+        MainFenster.checkBox_5.setChecked(False)
+        MainFenster.lineEdit_2.clear()
+        MainFenster.plainTextEdit_2.clear()
+    elif MainFenster.stackedWidget.currentIndex() == 3:
+        pass
+
+
     MainFenster.stackedWidget.setCurrentWidget(MainFenster.page)
+
+
+
 
 def save_note():
     def saving_note():
@@ -100,16 +115,23 @@ def go_new():
 def edit_save():
 
     file_name = MainFenster.lineEdit_2.text()
-
-    with open(f"Data/Notes/{file_name}.txt", "w") as file:
-        file.write(MainFenster.plainTextEdit_2.toPlainText())
-        MainFenster.plainTextEdit_2.toPlainText()
+    if not MainFenster. checkBox_4.isChecked():
+        with open(f"Data/Notes/{file_name}.txt", "w") as file:
+            file.write(MainFenster.plainTextEdit_2.toPlainText())
+            MainFenster.plainTextEdit_2.toPlainText()
 
     if MainFenster.checkBox_5.isChecked():
-        with open("PData/todos.json") as file:
-            datei = json.load(file)
-            data = list(datei)
-            data.append(file_name)
+
+        with open("PData/todos.json", "r") as file:
+            try:
+                data = json.load(file)
+            except json.JSONDecodeError:
+                data = []
+
+        data.append(file_name)
+
+        with open("PData/todos.json", "w") as file:
+            json.dump(data, file)
 
     go_home()
 
@@ -121,7 +143,12 @@ def edit_save():
 
 
 def show4():
-    MainFenster.checkBox_4.setVisible(True)
+    if MainFenster.checkBox_4.isVisible():
+        MainFenster.checkBox_4.setVisible(False)
+        MainFenster.checkBox_4.setChecked(False)
+    else:
+        MainFenster.checkBox_4.setVisible(True)
+
 
 def brows_button():
     pass
@@ -156,8 +183,10 @@ def open_file(pfad):
 class ToDo:
     def __init__(self):
         with open("PData/todos.json") as file:
-            self.datei = json.load(file)
-
+            try:
+                self.datei = json.load(file)
+            except json.JSONDecodeError:
+                self.datei = []
 
     def eins(self):
         if MainFenster.checkBox.isChecked():
