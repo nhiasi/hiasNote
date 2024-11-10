@@ -34,7 +34,7 @@ def main_setup():
             if file:
                 MainFenster.textEdit.setText(file.read())
 
-    todo = ToDo()
+    todo.inni()
     todo.set_todos()
 
     # bisschen hard dirty bitte besser machen
@@ -87,7 +87,8 @@ def go_home():
         MainFenster.plainTextEdit_2.clear()
     elif MainFenster.stackedWidget.currentIndex() == 3:
         pass
-
+    todo.inni()
+    todo.set_todos()
 
     MainFenster.stackedWidget.setCurrentWidget(MainFenster.page)
 
@@ -130,8 +131,9 @@ def edit_save():
 
         data.append(file_name)
 
-        with open("PData/todos.json", "w") as file:
+        with open("PData/todos.json", 'w') as file:
             json.dump(data, file)
+
 
     go_home()
 
@@ -181,7 +183,7 @@ def open_file(pfad):
 
 
 class ToDo:
-    def __init__(self):
+    def inni(self):
         with open("PData/todos.json") as file:
             try:
                 self.datei = json.load(file)
@@ -225,6 +227,9 @@ class ToDo:
             MainFenster.checkBox.setText(self.datei[0])
             MainFenster.checkBox_2.setText(self.datei[1])
             MainFenster.checkBox_3.setText(self.datei[2])
+            MainFenster.checkBox.setVisible(True)
+            MainFenster.checkBox_2.setVisible(True)
+            MainFenster.checkBox_3.setVisible(True)
 
         elif len(self.datei) == 2:
             MainFenster.checkBox.setVisible(True)
@@ -248,6 +253,8 @@ class ToDo:
 
 # ------------------------------ Kontrolls ------------------------------#
 app = QtWidgets.QApplication(sys.argv)
+
+todo = ToDo()
 
 window = QtWidgets.QMainWindow()
 MainFenster = ui()
