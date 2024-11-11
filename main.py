@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import QWidget
 #from PyQt6.QtWidgets.QWidget import window
 from qtpy import QtWidgets
 from ui.mainwindow import Ui_MainWindow as ui
+from ui.editwindow import Ui_Form as edit_ui
 
 from PyQt6.QtCore import QTime, QTimer
 
@@ -76,8 +77,6 @@ def main_setup():
 
 
 
-
-
 def go_home():
     if MainFenster.stackedWidget.currentIndex() == 1:
         MainFenster.checkBox_4.setChecked(False)
@@ -91,8 +90,6 @@ def go_home():
     todo.set_todos()
 
     MainFenster.stackedWidget.setCurrentWidget(MainFenster.page)
-
-
 
 
 def save_note():
@@ -116,10 +113,11 @@ def go_new():
 def edit_save():
 
     file_name = MainFenster.lineEdit_2.text()
-    if not MainFenster. checkBox_4.isChecked():
-        with open(f"Data/Notes/{file_name}.txt", "w") as file:
-            file.write(MainFenster.plainTextEdit_2.toPlainText())
-            MainFenster.plainTextEdit_2.toPlainText()
+    if not MainFenster.checkBox_4.isChecked():
+        with open(f"Data/{file_name}", "w") as file:
+            inhalt = MainFenster.plainTextEdit_2.toPlainText()
+            file.write(inhalt)
+
 
     if MainFenster.checkBox_5.isChecked():
 
@@ -138,12 +136,6 @@ def edit_save():
     go_home()
 
 
-
-
-
-
-
-
 def show4():
     if MainFenster.checkBox_4.isVisible():
         MainFenster.checkBox_4.setVisible(False)
@@ -157,7 +149,9 @@ def brows_button():
 
 
 def last_button():
-    pass
+    with open("PData/last.txt",) as file:
+        data = file.read()
+    open_file(f"Data/{data}")
 
 def marked_button():
     pass
@@ -168,19 +162,21 @@ def do_search():
     if suchbegriff != "":
         pfad = f"./Data/{suchbegriff}"
         if os.path.exists(pfad):
-
                 open_file(pfad)
 
         else:
             MainFenster.label.setText("Datei nicht Vorhanden")
             QTimer.singleShot(1000, lambda:MainFenster.label.clear())
 
-def open_file(pfad):
-    with open(pfad, "w") as file:
-        inhalt = file.read()
 
-    pass
+def open_file(path):
+     #
 
+        with open(path, 'r') as file:
+            inhalt = file.read()
+        EditFenster.label.setText(path.strip("."))
+        EditFenster.textEdit.setText(inhalt)
+        edit_window.show()
 
 class ToDo:
     def inni(self):
@@ -260,7 +256,12 @@ window = QtWidgets.QMainWindow()
 MainFenster = ui()
 MainFenster.setupUi(window)
 
+edit_window = QtWidgets.QMainWindow()
+EditFenster = edit_ui()
+EditFenster.setupUi(edit_window)
+
 main_setup()
 window.show()
+#edit_window.show()
 
 sys.exit(app.exec())
