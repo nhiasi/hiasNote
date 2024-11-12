@@ -243,7 +243,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../../../Downloads/arrow_back_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png</normaloff>../../../Downloads/arrow_back_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png</iconset>
+        <normaloff>../PData/bilder/arrow_back.png</normaloff>../PData/bilder/arrow_back.png</iconset>
       </property>
      </widget>
      <widget class="QCheckBox" name="checkBox_4">

@@ -75,18 +75,24 @@ def main_setup():
     ### Edit Fenster ###
     EditFenster.pushButton.clicked.connect(go_home)
     EditFenster.pushButton_2.clicked.connect(save_note)
-    #EditFenster.pushButton_3.clicked.connect()
-    #EditFenster.pushButton_4.clicked.connect()
+    #EditFenster.pushButton_3.clicked.connect(close)
+    #EditFenster.pushButton_4.clicked.connect(del_note)
 
 
 
 
 def save_note():
-    file_name = EditFenster.label.text()
-    inhalt = EditFenster.textEdit.text()
-    with open(f"Data/{file_name}", "w") as file:
+    file_path = EditFenster.label.text()
+    inhalt = EditFenster.textEdit.toPlainText()
+    with open(file_path, "w") as file:
         file.write(inhalt)
-    #edit_window.close()
+    edit_window.close()
+def del_note():
+    edit_window.close()
+    file_path = EditFenster.label.text()
+    os.remove(file_path)
+
+
 
 def go_home():
     if MainFenster.stackedWidget.currentIndex() == 1:
@@ -97,6 +103,8 @@ def go_home():
         MainFenster.plainTextEdit_2.clear()
     elif MainFenster.stackedWidget.currentIndex() == 3:
         pass
+    else:
+        edit_window.close()
     todo.inni()
     todo.set_todos()
 
