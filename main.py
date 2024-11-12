@@ -64,18 +64,29 @@ def main_setup():
 
     MainFenster.pushButton_5.clicked.connect(edit_save)
 
-
-    MainFenster.textEdit.textChanged.connect(save_note)
-
+    MainFenster.textEdit.textChanged.connect(save_new_note)
 
     MainFenster.label.setText("")
 
     ### New Fenster ###
-
     MainFenster.pushButton_6.clicked.connect(go_home)
     MainFenster.checkBox_5.stateChanged.connect(show4)
 
+    ### Edit Fenster ###
+    EditFenster.pushButton.clicked.connect(go_home)
+    EditFenster.pushButton_2.clicked.connect(save_note)
+    #EditFenster.pushButton_3.clicked.connect()
+    #EditFenster.pushButton_4.clicked.connect()
 
+
+
+
+def save_note():
+    file_name = EditFenster.label.text()
+    inhalt = EditFenster.textEdit.text()
+    with open(f"Data/{file_name}", "w") as file:
+        file.write(inhalt)
+    #edit_window.close()
 
 def go_home():
     if MainFenster.stackedWidget.currentIndex() == 1:
@@ -92,7 +103,11 @@ def go_home():
     MainFenster.stackedWidget.setCurrentWidget(MainFenster.page)
 
 
-def save_note():
+def brows_button():
+    pass
+
+
+def save_new_note():
     def saving_note():
         MainFenster.textEdit.blockSignals(True)
         time.sleep(60)
@@ -109,6 +124,7 @@ def go_new():
     # so kann man fenster aufrufen
     MainFenster.checkBox_4.setVisible(False)
     MainFenster.lineEdit_2.setFocus()
+
 
 def edit_save():
 
@@ -142,10 +158,6 @@ def show4():
         MainFenster.checkBox_4.setChecked(False)
     else:
         MainFenster.checkBox_4.setVisible(True)
-
-
-def brows_button():
-    pass
 
 
 def last_button():
