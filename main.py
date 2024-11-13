@@ -19,6 +19,7 @@ from ui.mainwindow import Ui_MainWindow as ui
 from ui.editwindow import Ui_Form as edit_ui
 
 from PyQt6.QtCore import QTime, QTimer
+from PyQt6.QtWidgets import QFileDialog
 
 
 # ------------------------------ Standarts ------------------------------#
@@ -117,7 +118,12 @@ def go_home():
 
 
 def brows_button():
-    pass
+    datei_name, _ = QFileDialog.getOpenFileName( caption="Datei auswählen", directory="./Data")
+
+    if datei_name:
+
+        path = "./" + datei_name.split("/")[-2] + "/" + datei_name.split("/")[-1]
+        open_file(path)
 
 
 def save_new_note():
@@ -195,13 +201,11 @@ def do_search():
 
 
 def open_file(path):
-     #
-
-        with open(path, 'r') as file:
-            inhalt = file.read()
-        EditFenster.label.setText(path.strip("."))
-        EditFenster.textEdit.setText(inhalt)
-        edit_window.show()
+    with open(path, 'r') as file:
+        inhalt = file.read()
+    EditFenster.label.setText(path.strip("."))
+    EditFenster.textEdit.setText(inhalt)
+    edit_window.show()
 
 class ToDo:
     def inni(self):
