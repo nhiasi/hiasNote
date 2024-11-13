@@ -79,7 +79,7 @@ def main_setup():
     #EditFenster.pushButton_4.clicked.connect(del_note)
 
 
-
+    #MainFenster.stackedWidget.setCurrentWidget(MainFenster.page_3)
 
 def save_note():
     file_path = EditFenster.label.text()
@@ -105,10 +105,15 @@ def go_home():
         pass
     else:
         edit_window.close()
+        window.raise_()
+        window.activateWindow()
+
+        MainFenster.lineEdit.clear()
     todo.inni()
     todo.set_todos()
 
     MainFenster.stackedWidget.setCurrentWidget(MainFenster.page)
+
 
 
 def brows_button():

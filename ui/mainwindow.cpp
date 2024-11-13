@@ -12,3 +12,13 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_pushButton_7_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Datei öffnen"),
+        "",
+        tr("Alle Dateien (*);;Textdateien (*.txt)")
+        );
+}
+
