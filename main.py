@@ -76,23 +76,30 @@ def main_setup():
     ### Edit Fenster ###
     EditFenster.pushButton.clicked.connect(go_home)
     EditFenster.pushButton_2.clicked.connect(save_note)
-    #EditFenster.pushButton_3.clicked.connect(close)
-    #EditFenster.pushButton_4.clicked.connect(del_note)
+    EditFenster.pushButton_3.clicked.connect(mark)
+    EditFenster.pushButton_4.clicked.connect(del_note)
 
 
     #MainFenster.stackedWidget.setCurrentWidget(MainFenster.page_3)
 
 def save_note():
-    file_path = EditFenster.label.text()
+    file_path = "." + EditFenster.label.text()
     inhalt = EditFenster.textEdit.toPlainText()
     with open(file_path, "w") as file:
         file.write(inhalt)
-    edit_window.close()
+    go_home()
+
+
+def mark():
+    with open("/Data/marked", "w") as file:
+        file.write()
+
+
 def del_note():
     edit_window.close()
     file_path = EditFenster.label.text()
     os.remove(file_path)
-
+    go_home()
 
 
 def go_home():
@@ -203,9 +210,14 @@ def do_search():
 def open_file(path):
     with open(path, 'r') as file:
         inhalt = file.read()
-    EditFenster.label.setText(path.strip("."))
+    name_offene_datei = path.strip(".")
+
+    EditFenster.label.setText(name_offene_datei)
     EditFenster.textEdit.setText(inhalt)
     edit_window.show()
+
+    MainFenster.lineEdit_2.clear()
+
 
 class ToDo:
     def inni(self):
