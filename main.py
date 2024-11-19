@@ -37,9 +37,6 @@ class HiasNote:
 
         self.app = QtWidgets.QApplication(sys.argv)
 
-        #self.todo = ToDo()
-        #self.edit = Edit()
-
         self.window = QtWidgets.QMainWindow()
         self.MainFenster = ui()
         self.MainFenster.setupUi(self.window)
@@ -199,6 +196,8 @@ class HiasNote:
         else:
             self.MainFenster.checkBox_4.setVisible(True)
 
+
+
     def last_button(self):
         with open("PData/last.txt",) as file:
             data = file.read()
@@ -219,16 +218,23 @@ class HiasNote:
                 self.MainFenster.label.setText("Datei nicht Vorhanden")
                 QTimer.singleShot(1000, lambda: self.MainFenster.label.clear())
 
-    def open_file(self, path):
+    def open_file(self, pfad):
+        self.offene_file = os.path.basename(pfad)
+        with open("PData/last.txt", "w") as file:
+            file.write(self.offene_file)
+
         with open("PData/marked.json", "r") as file:
             datei = json.load(file)
-            print(path)
 
-        with open(path, 'r') as file:
+            if self.offene_file in datei:
+                self.EditFenster.pushButton_3.setText("Demakieren")
+            else:
+                self.EditFenster.pushButton_3.setText("Makieren")
+
+        with open(pfad, 'r') as file:
             inhalt = file.read()
-        name_offene_datei = path.strip(".")
 
-        self.EditFenster.label.setText(name_offene_datei)
+        self.EditFenster.label.setText(self.offene_file)
         self.EditFenster.textEdit.setText(inhalt)
         self.edit_window.show()
 
@@ -240,10 +246,13 @@ class HiasNote:
 
         if self.offene_file in datei:
             datei.remove(self.offene_file)
+            self.EditFenster.pushButton_3.setText("Makieren")
         else:
             datei.append(self.offene_file)
+            self.EditFenster.pushButton_3.setText("Demakieren")
         with open("PData/marked.json", "w") as file:
             json.dump(datei, file)
+
 
     def todo_inni(self):
         with open("PData/todos.json") as file:
