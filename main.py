@@ -2,34 +2,25 @@
 # ------------------------------ Version ------------------------------#
 #Version 1.0.0
 #Author nhiasi
-import json
+
 # ------------------------------ Import ------------------------------#
+# ---------- Imports from py ---------- #
 import sys
-#from lib2to3.btm_utils import MinNode
+import json
 import os
 import time
 import threading
 
-import pickle
-
-from PyQt6.QtWidgets import QWidget
-#from PyQt6.QtWidgets.QWidget import window
+# ---------- Imports from QT ---------- #
 from qtpy import QtWidgets
-from ui.mainwindow import Ui_MainWindow as ui
-from ui.editwindow import Ui_Form as edit_ui
-
 from PyQt6.QtCore import QTime, QTimer
 from PyQt6.QtWidgets import QFileDialog
 
-
-# ------------------------------ Standarts ------------------------------#
-
-
-
+# ---------- Imports from GUI ---------- #
+from ui.mainwindow import Ui_MainWindow as ui
+from ui.editwindow import Ui_Form as edit_ui
 
 # ------------------------------ Code ------------------------------#
-
-
 class HiasNote:
 
     def __init__(self):
@@ -117,7 +108,6 @@ class HiasNote:
         os.remove(file_path)
         self.go_home()
 
-
     def go_home(self):
         if self.MainFenster.stackedWidget.currentIndex() == 1:
             self.MainFenster.checkBox_4.setChecked(False)
@@ -138,8 +128,6 @@ class HiasNote:
 
         self.MainFenster.stackedWidget.setCurrentWidget(self.MainFenster.page)
 
-
-
     def brows_button(self):
         datei_name, _ = QFileDialog.getOpenFileName( caption="Datei auswählen", directory="./Data")
 
@@ -147,7 +135,6 @@ class HiasNote:
 
             path = "./" + datei_name.split("/")[-2] + "/" + datei_name.split("/")[-1]
             self.open_file(path)
-
 
     def save_new_note(self):
         def saving_note():
@@ -160,13 +147,11 @@ class HiasNote:
         note_thread = threading.Thread(target=saving_note)
         note_thread.start()
 
-
     def go_new(self):
         self.MainFenster.stackedWidget.setCurrentWidget(self.MainFenster.page_2)
         # so kann man fenster aufrufen
         self.MainFenster.checkBox_4.setVisible(False)
         self.MainFenster.lineEdit_2.setFocus()
-
 
     def edit_save(self):
         file_name = self.MainFenster.lineEdit_2.text()
@@ -195,8 +180,6 @@ class HiasNote:
             self.MainFenster.checkBox_4.setChecked(False)
         else:
             self.MainFenster.checkBox_4.setVisible(True)
-
-
 
     def last_button(self):
         with open("PData/last.txt",) as file:
@@ -252,7 +235,6 @@ class HiasNote:
             self.EditFenster.pushButton_3.setText("Demakieren")
         with open("PData/marked.json", "w") as file:
             json.dump(datei, file)
-
 
     def todo_inni(self):
         with open("PData/todos.json") as file:
@@ -317,6 +299,9 @@ class HiasNote:
 
     # ------------------------------ Kontrolls ------------------------------#
 
+
+# ------------------------------ ExeQ ------------------------------#
 if __name__ == "__main__":
+
     main = HiasNote()
     main.main_setup()
