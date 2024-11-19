@@ -24,7 +24,7 @@ class Ui_Form(object):
         self.pushButton_2.setGeometry(QtCore.QRect(400, 460, 80, 24))
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_3 = QtWidgets.QPushButton(parent=Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(110, 460, 80, 24))
+        self.pushButton_3.setGeometry(QtCore.QRect(210, 460, 80, 24))
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_4 = QtWidgets.QPushButton(parent=Form)
         self.pushButton_4.setGeometry(QtCore.QRect(20, 460, 80, 24))
@@ -53,6 +53,6 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "hiasNote"))
         self.pushButton_2.setText(_translate("Form", "Save"))
-        self.pushButton_3.setText(_translate("Form", "Löschen"))
-        self.pushButton_4.setText(_translate("Form", "Abbrechen"))
+        self.pushButton_3.setText(_translate("Form", "Markieren"))
+        self.pushButton_4.setText(_translate("Form", "Löschen"))
         self.label.setText(_translate("Form", "TextLabel"))
