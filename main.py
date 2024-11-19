@@ -39,6 +39,7 @@ def main_setup():
     todo.inni()
     todo.set_todos()
 
+
     # bisschen hard dirty bitte besser machen
     def chbo1():
         QTimer.singleShot(550, lambda: todo.eins())
@@ -51,7 +52,7 @@ def main_setup():
 
 
     ### Main Fenster ###
-    MainFenster.lineEdit.editingFinished.connect(do_search)
+    MainFenster.lineEdit.editingFinished.connect(edit.do_search)
     MainFenster.lineEdit.setFocus()
 
     MainFenster.pushButton.clicked.connect(go_new)
@@ -76,7 +77,7 @@ def main_setup():
     ### Edit Fenster ###
     EditFenster.pushButton.clicked.connect(go_home)
     EditFenster.pushButton_2.clicked.connect(save_note)
-    EditFenster.pushButton_3.clicked.connect(mark)
+    EditFenster.pushButton_3.clicked.connect(edit.do_mark)
     EditFenster.pushButton_4.clicked.connect(del_note)
 
 
@@ -88,12 +89,6 @@ def save_note():
     with open(file_path, "w") as file:
         file.write(inhalt)
     go_home()
-
-
-def mark():
-    with open("/Data/marked", "w") as file:
-        file.write()
-
 
 def del_note():
     edit_window.close()
@@ -200,14 +195,19 @@ def do_search():
     if suchbegriff != "":
         pfad = f"./Data/{suchbegriff}"
         if os.path.exists(pfad):
-                open_file(pfad)
+            open_file(pfad)
+            #TODO mach das man suchbegriff irgendwie nach ausen bringt
 
         else:
             MainFenster.label.setText("Datei nicht Vorhanden")
-            QTimer.singleShot(1000, lambda:MainFenster.label.clear())
+            QTimer.singleShot(1000, lambda: MainFenster.label.clear())
 
 
 def open_file(path):
+    with open("PData/marked.json", "r") as file:
+        datei = json.load(file)
+        print(path)
+        #if in data
     with open(path, 'r') as file:
         inhalt = file.read()
     name_offene_datei = path.strip(".")
@@ -217,6 +217,38 @@ def open_file(path):
     edit_window.show()
 
     MainFenster.lineEdit_2.clear()
+
+
+class Edit:
+
+    def __init__(self):
+        self.open_file = ""
+
+    def do_search(self):
+        suchbegriff = MainFenster.lineEdit.text()
+        if suchbegriff != "":
+            pfad = f"./Data/{suchbegriff}"
+            if os.path.exists(pfad):
+                open_file(pfad)
+                self.open_file = suchbegriff
+            else:
+                MainFenster.label.setText("Datei nicht Vorhanden")
+                QTimer.singleShot(1000, lambda: MainFenster.label.clear())
+
+    def do_mark(self):
+        with open("PData/marked.json", "r") as file:
+            datei = json.load(file)
+
+        if self.open_file in datei:
+            datei.remove(self.open_file)
+        else:
+            datei.append(self.open_file)
+        with open("PData/marked.json", "w") as file:
+            json.dump(datei, file)
+
+
+
+
 
 
 class ToDo:
@@ -292,6 +324,7 @@ class ToDo:
 app = QtWidgets.QApplication(sys.argv)
 
 todo = ToDo()
+edit = Edit()
 
 window = QtWidgets.QMainWindow()
 MainFenster = ui()
