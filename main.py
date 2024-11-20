@@ -97,15 +97,16 @@ class HiasNote:
 
     def save_note(self):
         file_path = "." + self.EditFenster.label.text()
+
         inhalt = self.EditFenster.textEdit.toPlainText()
-        with open(file_path, "w") as file:
+        with open(f"Data/{self.offene_file}", "w") as file:
             file.write(inhalt)
         self.go_home()
 
     def del_note(self):
         self.edit_window.close()
-        file_path = self.EditFenster.label.text()
-        os.remove(file_path)
+        os.remove(f"Data/{self.offene_file}")
+
         self.go_home()
 
     def go_home(self):
