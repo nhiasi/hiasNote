@@ -96,8 +96,6 @@ class HiasNote:
         #MainFenster.stackedWidget.setCurrentWidget(MainFenster.page_3)
 
     def save_note(self):
-        file_path = "." + self.EditFenster.label.text()
-
         inhalt = self.EditFenster.textEdit.toPlainText()
         with open(f"Data/{self.offene_file}", "w") as file:
             file.write(inhalt)
@@ -184,11 +182,23 @@ class HiasNote:
 
     def last_button(self):
         with open("PData/last.txt",) as file:
-            data = file.read()
-        self.open_file(f"Data/{data}")
+                data = file.read()
+        try:
+            self.open_file(f"Data/{data}")
+        except FileNotFoundError:
+            self.datei_not_found()
 
     def marked_button(self):
-        pass
+        with open("PData/marked.json",) as file:
+                data = json.load(file)
+        if data:
+            try:
+                self.open_file(f"Data/{data[0]}")
+            except FileNotFoundError:
+                self.datei_not_found()
+        else:
+            self.datei_not_found()
+
 
     def do_search(self):
         suchbegriff = self.MainFenster.lineEdit.text()
@@ -199,9 +209,11 @@ class HiasNote:
                 #TODO mach das man suchbegriff irgendwie nach ausen bringt
 
             else:
-                self.MainFenster.label.setText("Datei nicht Vorhanden")
-                QTimer.singleShot(1000, lambda: self.MainFenster.label.clear())
+                self.datei_not_found()
 
+    def datei_not_found(self):
+        self.MainFenster.label.setText("Datei nicht Vorhanden")
+        QTimer.singleShot(1000, lambda: self.MainFenster.label.clear())
     def open_file(self, pfad):
         self.offene_file = os.path.basename(pfad)
         with open("PData/last.txt", "w") as file:
@@ -225,6 +237,9 @@ class HiasNote:
         self.MainFenster.lineEdit_2.clear()
 
     def do_mark(self):
+        # kann man evtl auch so machen das man mehrere datein makieren kann
+        # wird vorerst ausgeslassen
+
         with open("PData/marked.json", "r") as file:
             datei = json.load(file)
 
@@ -232,7 +247,8 @@ class HiasNote:
             datei.remove(self.offene_file)
             self.EditFenster.pushButton_3.setText("Makieren")
         else:
-            datei.append(self.offene_file)
+            #datei.append(self.offene_file)
+            datei = [self.offene_file]
             self.EditFenster.pushButton_3.setText("Demakieren")
         with open("PData/marked.json", "w") as file:
             json.dump(datei, file)
