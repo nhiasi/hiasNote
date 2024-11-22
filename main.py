@@ -76,30 +76,31 @@ class HiasNote:
         self.MainFenster.checkBox_2.stateChanged.connect(chbo2)
         self.MainFenster.checkBox_3.stateChanged.connect(chbo3)
 
-        self.MainFenster.pushButton_5.clicked.connect(self.edit_save)
+        self.MainFenster.pushButton_5.clicked.connect(self.save_new_file)
 
-        self.MainFenster.textEdit.textChanged.connect(self.save_new_note)
+
 
         self.MainFenster.label.setText("")
 
         ### New Fenster ###
         self.MainFenster.pushButton_6.clicked.connect(self.go_home)
         self.MainFenster.checkBox_5.stateChanged.connect(self.show4)
+        self.MainFenster.textEdit.textChanged.connect(self.save_new_note)
 
         ### Edit Fenster ###
         self.EditFenster.pushButton.clicked.connect(self.go_home)
-        self.EditFenster.pushButton_2.clicked.connect(self.save_note)
+        self.EditFenster.pushButton_2.clicked.connect(self.save_edit)
         self.EditFenster.pushButton_3.clicked.connect(self.do_mark)
         self.EditFenster.pushButton_4.clicked.connect(self.del_note)
 
 
         #MainFenster.stackedWidget.setCurrentWidget(MainFenster.page_3)
 
-    def save_note(self):
+    def save_edit(self):
         inhalt = self.EditFenster.textEdit.toPlainText()
         with open(f"Data/{self.offene_file}", "w") as file:
             file.write(inhalt)
-        self.go_home()
+        #self.go_home()
 
     def del_note(self):
         self.edit_window.close()
@@ -152,8 +153,8 @@ class HiasNote:
         self.MainFenster.checkBox_4.setVisible(False)
         self.MainFenster.lineEdit_2.setFocus()
 
-    def edit_save(self):
-        file_name = self.MainFenster.lineEdit_2.text()
+    def save_new_file(self):
+        file_name = self.MainFenster.lineEdit_2.text() + ".nh"
         if not self.MainFenster.checkBox_4.isChecked():
             with open(f"Data/{file_name}", "w") as file:
                 inhalt = self.MainFenster.plainTextEdit_2.toPlainText()
@@ -199,7 +200,6 @@ class HiasNote:
         else:
             self.datei_not_found()
 
-
     def do_search(self):
         suchbegriff = self.MainFenster.lineEdit.text()
         if suchbegriff != "":
@@ -214,6 +214,7 @@ class HiasNote:
     def datei_not_found(self):
         self.MainFenster.label.setText("Datei nicht Vorhanden")
         QTimer.singleShot(1000, lambda: self.MainFenster.label.clear())
+
     def open_file(self, pfad):
         self.offene_file = os.path.basename(pfad)
         with open("PData/last.txt", "w") as file:
