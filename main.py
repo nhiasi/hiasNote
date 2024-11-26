@@ -258,7 +258,6 @@ class HiasNote:
             datei.remove(self.offene_file)
             self.EditFenster.pushButton_3.setText("Makieren")
         else:
-            #datei.append(self.offene_file)
             datei = [self.offene_file]
             self.EditFenster.pushButton_3.setText("Demakieren")
         with open("PData/marked.json", "w") as file:
@@ -289,9 +288,9 @@ class HiasNote:
 
     def set_todos(self):
         if len(self.datei) >= 3:
-            self.MainFenster.checkBox.setText(self.datei[0])
-            self.MainFenster.checkBox_2.setText(self.datei[1])
-            self.MainFenster.checkBox_3.setText(self.datei[2])
+            self.MainFenster.checkBox.setText(self.datei[0].partition(".")[0])
+            self.MainFenster.checkBox_2.setText(self.datei[1].partition(".")[0])
+            self.MainFenster.checkBox_3.setText(self.datei[2].partition(".")[0])
             self.MainFenster.checkBox.setVisible(True)
             self.MainFenster.checkBox_2.setVisible(True)
             self.MainFenster.checkBox_3.setVisible(True)
@@ -301,15 +300,15 @@ class HiasNote:
             self.MainFenster.checkBox_2.setVisible(True)
             self.MainFenster.checkBox_3.setVisible(False)
 
-            self.MainFenster.checkBox.setText(self.datei[0])
-            self.MainFenster.checkBox_2.setText(self.datei[1])
+            self.MainFenster.checkBox.setText(self.datei[0].partition(".")[0])
+            self.MainFenster.checkBox_2.setText(self.datei[1].partition(".")[0])
 
         elif len(self.datei) == 1:
             self.MainFenster.checkBox.setVisible(True)
             self.MainFenster.checkBox_2.setVisible(False)
             self.MainFenster.checkBox_3.setVisible(False)
 
-            self.MainFenster.checkBox.setText(self.datei[0])
+            self.MainFenster.checkBox.setText(self.datei[0].partition(".")[0])
 
         elif len(self.datei) == 0:
             self.MainFenster.checkBox.setVisible(False)
