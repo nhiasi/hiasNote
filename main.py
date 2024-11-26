@@ -60,18 +60,18 @@ class HiasNote:
 
         def chbo1():
             self.MainFenster.checkBox.disconnect()
-            QTimer.singleShot(550, lambda: self.todo_done(todu_num=0))
-            self.MainFenster.checkBox_3.stateChanged.connect(chbo3)
+            QTimer.singleShot(550, lambda: (self.todo_done(todu_num=0),
+                                            self.MainFenster.checkBox.stateChanged.connect(chbo1) ))
 
         def chbo2():
             self.MainFenster.checkBox_2.disconnect()
-            QTimer.singleShot(550, lambda: self.todo_done(todu_num=1))
-            self.MainFenster.checkBox_2.stateChanged.connect(chbo2)
+            QTimer.singleShot(550, lambda: (self.todo_done(todu_num=1),
+                                            self.MainFenster.checkBox_2.stateChanged.connect(chbo2) ))
 
         def chbo3():
             self.MainFenster.checkBox_3.disconnect()
-            QTimer.singleShot(550, lambda: self.todo_done(todu_num=2))
-            self.MainFenster.checkBox_3.stateChanged.connect(chbo3)
+            QTimer.singleShot(550, lambda: (self.todo_done(todu_num=2),
+                              self.MainFenster.checkBox_3.stateChanged.connect(chbo3) ))
 
         ### Main Fenster ###
         self.MainFenster.lineEdit.editingFinished.connect(self.do_search)
@@ -213,7 +213,7 @@ class HiasNote:
     def do_search(self):
         self.suchbegriff = self.MainFenster.lineEdit.text()
         if self.suchbegriff != "":
-            pfad = f"./Data/{self.suchbegriff}"
+            pfad = f"./Data/{self.suchbegriff}.nh"
             if os.path.exists(pfad):
                 self.open_file(pfad)
                 #TODO mach das man suchbegriff irgendwie nach ausen bringt
@@ -241,7 +241,7 @@ class HiasNote:
         with open(pfad, 'r') as file:
             inhalt = file.read()
 
-        self.EditFenster.label.setText(self.offene_file)
+        self.EditFenster.label.setText(self.offene_file.partition(".")[0])
         self.EditFenster.textEdit.setText(inhalt)
         self.edit_window.show()
 
