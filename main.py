@@ -13,7 +13,7 @@ import threading
 
 # ---------- Imports from QT ---------- #
 from qtpy import QtWidgets
-from PyQt6.QtCore import QTime, QTimer
+from PyQt6.QtCore import QTime, QTimer, Qt
 from PyQt6.QtWidgets import QFileDialog
 
 # ---------- Imports from GUI ---------- #
@@ -25,6 +25,9 @@ class HiasNote:
 
     def __init__(self):
         self.offene_file = ""
+        self.suchbegriff = ""
+
+
 
         self.app = QtWidgets.QApplication(sys.argv)
 
@@ -35,6 +38,8 @@ class HiasNote:
         self.edit_window = QtWidgets.QMainWindow()
         self.EditFenster = edit_ui()
         self.EditFenster.setupUi(self.edit_window)
+
+
 
         self.main_setup()
         self.window.show()
@@ -52,16 +57,21 @@ class HiasNote:
         self.set_todos()
 
 
-        # TODO bisschen hard dirty bitte besser machen
+
         def chbo1():
-            QTimer.singleShot(550, lambda: self.todo_eins())
+            self.MainFenster.checkBox.disconnect()
+            QTimer.singleShot(550, lambda: self.todo_done(todu_num=0))
+            self.MainFenster.checkBox_3.stateChanged.connect(chbo3)
 
         def chbo2():
-            QTimer.singleShot(550, lambda: self.todo_zwei())
+            self.MainFenster.checkBox_2.disconnect()
+            QTimer.singleShot(550, lambda: self.todo_done(todu_num=1))
+            self.MainFenster.checkBox_2.stateChanged.connect(chbo2)
 
         def chbo3():
-            QTimer.singleShot(550, lambda: self.todo_drei())
-
+            self.MainFenster.checkBox_3.disconnect()
+            QTimer.singleShot(550, lambda: self.todo_done(todu_num=2))
+            self.MainFenster.checkBox_3.stateChanged.connect(chbo3)
 
         ### Main Fenster ###
         self.MainFenster.lineEdit.editingFinished.connect(self.do_search)
@@ -201,9 +211,9 @@ class HiasNote:
             self.datei_not_found()
 
     def do_search(self):
-        suchbegriff = self.MainFenster.lineEdit.text()
-        if suchbegriff != "":
-            pfad = f"./Data/{suchbegriff}"
+        self.suchbegriff = self.MainFenster.lineEdit.text()
+        if self.suchbegriff != "":
+            pfad = f"./Data/{self.suchbegriff}"
             if os.path.exists(pfad):
                 self.open_file(pfad)
                 #TODO mach das man suchbegriff irgendwie nach ausen bringt
@@ -261,30 +271,21 @@ class HiasNote:
             except json.JSONDecodeError:
                 self.datei = []
 
-    def todo_eins(self):
-        if self.MainFenster.checkBox.isChecked():
-            self.datei.pop(0)
-            self.todo_done()
-            self.set_todos()
-            self.MainFenster.checkBox.setChecked(False)
 
-    def todo_zwei(self):
-        if self.MainFenster.checkBox_2.isChecked():
-            self.datei.pop(1)
-            self.todo_done()
-            self.set_todos()
-            self.MainFenster.checkBox_2.setChecked(False)
+    def todo_done(self, todu_num):
+        chbo_list = [self.MainFenster.checkBox, self.MainFenster.checkBox_2, self.MainFenster.checkBox_3]
+        del_file = f"Data/{self.datei[todu_num]}"
 
-    def todo_drei(self):
-        if self.MainFenster.checkBox_3.isChecked():
-            self.datei.pop(2)
-            self.todo_done()
-            self.set_todos()
-            self.MainFenster.checkBox_3.setChecked(False)
+        if os.path.exists(del_file):
+            os.remove(del_file)
 
-    def todo_done(self):
+        self.datei.pop(todu_num)
         with open("PData/todos.json", "w") as file:
             json.dump(self.datei, file)
+
+        self.set_todos()
+        chbo_list[todu_num].setCheckState(Qt.CheckState.Unchecked)
+
 
     def set_todos(self):
         if len(self.datei) >= 3:
@@ -314,8 +315,6 @@ class HiasNote:
             self.MainFenster.checkBox.setVisible(False)
             self.MainFenster.checkBox_2.setVisible(False)
             self.MainFenster.checkBox_3.setVisible(False)
-
-    # ------------------------------ Kontrolls ------------------------------#
 
 
 # ------------------------------ ExeQ ------------------------------#
