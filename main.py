@@ -13,7 +13,7 @@ import threading
 
 # ---------- Imports from QT ---------- #
 from qtpy import QtWidgets
-from PyQt6.QtCore import QTime, QTimer, Qt
+from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtWidgets import QFileDialog
 
 # ---------- Imports from GUI ---------- #

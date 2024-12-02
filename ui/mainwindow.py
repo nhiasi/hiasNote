@@ -81,7 +81,7 @@ class Ui_MainWindow(object):
         self.pushButton_6.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.pushButton_6.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("ui\\../PData/bilder/arrow_back.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("../PData/bilder/arrow_back.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.pushButton_6.setIcon(icon)
         self.pushButton_6.setObjectName("pushButton_6")
         self.checkBox_4 = QtWidgets.QCheckBox(parent=self.page_2)
